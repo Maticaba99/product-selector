@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="textSelect">Select language</div>
+    <select class="selectLang" v-model="lang">
+      <option v-for="(language, index) in languages" :key="index">
+        {{ language }}
+      </option>
+    </select>
+    <div class="textSelect">Select Product</div>
     <multiselect
       v-model="selectedTypes"
       :key="option"
@@ -12,8 +19,8 @@
       :loading="isLoading"
       :internal-search="false"
       :close-on-select="false"
-      label="name"
-      track-by="name"
+      label="id"
+      track-by="id"
       :disabled="element.disabled"
       @input="onSelect"
       @onChange="onSelect"
@@ -68,7 +75,6 @@
           </span>
         </div>
       </template>
-
       <template slot="option" slot-scope="props"
         ><img
           class="option__image"
@@ -99,7 +105,9 @@ export default {
     return {
       selectedTypes: this.value || [],
       options: [],
-      isLoading: true
+      isLoading: true,
+      lang: "",
+      languages: ["en", "en-CA", "fr-CA"]
     };
   },
   created() {
@@ -116,18 +124,21 @@ export default {
     },
     value: {
       type: Object
+    },
+    updateSize: {
+      type: Function
     }
   },
   methods: {
-    limitText(count) {
-      return `and ${count} other countries`;
-    },
     async fetchTypes(query) {
       const firstUpdateValue = this.element.config.QUERY.replace(
         "##query##",
         query
       );
-      const lastUpdateValue = firstUpdateValue.replace("##query##", query);
+      const langUpdateValue = firstUpdateValue.replace(
+        "##language##",
+        this.lang
+      );
       this.isLoading = true;
       await fetch(this.element.config.API, {
         method: "post",
@@ -135,11 +146,11 @@ export default {
           Authorization: `Basic ${this.element.config.API_AUTH}`,
           "Content-Type": "application/json"
         },
-        body: lastUpdateValue
+        body: langUpdateValue
       })
         .then(response => response.json())
-        .then(json => {
-          this.options = json.hits.hits.map(product => {
+        .then(async json => {
+          const options = await json.hits.hits.map(product => {
             return {
               id: product._source.productfields.unique_id,
               name: product._source.productfields.product_name,
@@ -150,18 +161,24 @@ export default {
                 product._source.productcard &&
                 product._source.productcard.featureimage,
               quantity: 1,
-              price_cad: product._source.productfields.base_price_cad,
-              price_usd: product._source.productfields.base_price_usd
+              price_cad: product._source.productfields.listprice_cad,
+              price_usd: product._source.productfields.listprice_usd
             };
           });
+          // eslint-disable-next-line no-console
+          console.log(options);
+          this.options = options;
           this.isLoading = false;
+          this.updateSize();
         });
     },
     onSelect: function() {
       this.save(this.selectedTypes);
+      this.updateSize();
     },
     save: function(value) {
       this.$emit("update:value", value);
+      this.updateSize();
     }
   }
 };
