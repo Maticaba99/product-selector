@@ -71,25 +71,25 @@ export default {
     },
     async fetchTypes() {
       if (!this.disable) {
+        const url = `https://deliver.kontent.ai/${
+          this.element.config.projectId
+        }/items-feed?${
+          this.element.config.filter
+            ? "&" +
+              this.element.config.filter +
+              `&language=${this.element.language}`
+            : ""
+        }`;
+        // eslint-disable-next-line no-console
+        console.log(url, "url");
         do {
-          await fetch(
-            `https://deliver.kontent.ai/${
-              this.element.config.projectId
-            }/items-feed?${
-              this.element.config.filter
-                ? "&" +
-                  this.element.config.filter +
-                  `&language=${this.element.language}`
-                : ""
-            }`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${this.element.config.secureAccess}`,
-                "x-continuation": this.xContinuation
-              }
+          await fetch(url, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${this.element.config.secureAccess}`,
+              "x-continuation": this.xContinuation
             }
-          )
+          })
             .then(response => {
               this.xContinuation = response.headers.get("x-continuation");
               return response.json();
