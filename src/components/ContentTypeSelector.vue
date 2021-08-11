@@ -113,6 +113,8 @@ export default {
               return response.json();
             })
             .then(json => {
+              // eslint-disable-next-line no-console
+              console.log(json, "okey");
               json.items.map(type => {
                 const res = {
                   name: type.elements.display_name.value,
@@ -131,6 +133,8 @@ export default {
     },
     async onChangeEventHandler() {
       this.lang = !this.lang;
+      // eslint-disable-next-line no-console
+      console.log(this.lang, "updated");
       await this.fetchTypes();
     },
     onSelect: function() {
