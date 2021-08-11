@@ -84,17 +84,15 @@ export default {
     },
     onChangeEventHandler() {
       this.lang = !this.lang;
-      // eslint-disable-next-line no-console
-      console.log(this.lang, "updated");
     },
     async fetchTypes() {
       if (!this.disable) {
-        /*   const url = `https://deliver.kontent.ai/${
+        const url = `https://deliver.kontent.ai/${
           this.element.config.projectId
         }/items-feed?${
           this.element.config.filter ? "&" + this.element.config.filter : ""
         }`;
- */
+
         const urlWithLanguage = `https://deliver.kontent.ai/${
           this.element.config.projectId
         }/items-feed?${
@@ -102,11 +100,9 @@ export default {
             ? "&" + this.element.config.filter + `&language=fr-CA`
             : ""
         }`;
-        // eslint-disable-next-line no-console
-        console.log(urlWithLanguage, this.lang);
-        /* const finalUrl = this.lang ? urlWithLanguage : urlWithLanguage; */
+        const finalUrl = this.lang ? urlWithLanguage : url;
         do {
-          await fetch(urlWithLanguage, {
+          await fetch(finalUrl, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${this.element.config.secureAccess}`,
@@ -118,20 +114,14 @@ export default {
               return response.json();
             })
             .then(json => {
-              // eslint-disable-next-line no-console
-              console.log(json, "check");
-
               json.items.map(type => {
                 const res = {
                   name: type.elements.display_name.value,
                   sys_name: type.system.name
                 };
-                // eslint-disable-next-line no-console
-                console.log(res);
+
                 return this.options.push(res);
               });
-              // eslint-disable-next-line no-console
-              console.log(this.options[2]);
 
               if (!this.xContinuation) {
                 this.isLoading = false;
