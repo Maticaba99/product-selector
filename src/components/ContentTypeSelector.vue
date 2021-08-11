@@ -115,12 +115,12 @@ export default {
               return response.json();
             })
             .then(json => {
-              // eslint-disable-next-line no-console
-              console.log(json, "data");
               // Actual language
               const actualLanguage = this.lang ? "en" : "fr-CA";
               json.items.map(type => {
                 if (type.system.language === actualLanguage) {
+                  // eslint-disable-next-line no-console
+                  console.log(type, "data");
                   const res = {
                     name: type.elements.display_name.value,
                     sys_name: type.system.name
