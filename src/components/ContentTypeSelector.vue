@@ -70,14 +70,14 @@ export default {
       return `and ${count} other countries`;
     },
     async fetchTypes() {
+      // eslint-disable-next-line no-console
+      console.log(this.context);
       if (!this.disable) {
         const url = `https://deliver.kontent.ai/${
           this.element.config.projectId
         }/items-feed?${
           this.element.config.filter
-            ? "&" +
-              this.element.config.filter +
-              `&language=${this.element.config.language}`
+            ? "&" + this.element.config.filter + `&language=en`
             : ""
         }`;
         // eslint-disable-next-line no-console
