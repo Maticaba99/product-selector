@@ -4,7 +4,6 @@
       <toggle-button
         @change="onChangeEventHandler"
         :value="false"
-        v-model="lang"
         :labels="{ checked: 'French', unchecked: 'Default' }"
       />
     </div>
@@ -110,11 +109,14 @@ export default {
           })
             .then(response => {
               this.xContinuation = response.headers.get("x-continuation");
+
+              // eslint-disable-next-line no-console
+              console.log(this.xContinuation, "xContinuation");
               return response.json();
             })
             .then(json => {
               // eslint-disable-next-line no-console
-              console.log(json, "okey");
+              console.log(json, "data");
               json.items.map(type => {
                 const res = {
                   name: type.elements.display_name.value,
