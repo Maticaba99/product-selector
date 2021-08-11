@@ -86,23 +86,23 @@ export default {
       this.lang = !this.lang;
     },
     async fetchTypes() {
-      if (!this.disable) {
-        const url = `https://deliver.kontent.ai/${
-          this.element.config.projectId
-        }/items-feed?${
-          this.element.config.filter ? "&" + this.element.config.filter : ""
-        }`;
+      const url = `https://deliver.kontent.ai/${
+        this.element.config.projectId
+      }/items-feed?${
+        this.element.config.filter ? "&" + this.element.config.filter : ""
+      }`;
 
-        const urlWithLanguage = `https://deliver.kontent.ai/${
-          this.element.config.projectId
-        }/items-feed?${
-          this.element.config.filter
-            ? "&" + this.element.config.filter + `&language=fr-CA`
-            : ""
-        }`;
-        const finalUrl = this.lang ? urlWithLanguage : url;
-        // eslint-disable-next-line no-console
-        console.log(finalUrl, this.lang);
+      const urlWithLanguage = `https://deliver.kontent.ai/${
+        this.element.config.projectId
+      }/items-feed?${
+        this.element.config.filter
+          ? "&" + this.element.config.filter + `&language=fr-CA`
+          : ""
+      }`;
+      const finalUrl = this.lang ? urlWithLanguage : url;
+      // eslint-disable-next-line no-console
+      console.log(finalUrl, this.lang);
+      if (!this.disable) {
         do {
           await fetch(finalUrl, {
             headers: {
