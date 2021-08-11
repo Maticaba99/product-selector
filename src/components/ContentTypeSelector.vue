@@ -103,10 +103,10 @@ export default {
             : ""
         }`;
         // eslint-disable-next-line no-console
-        console.log(this.lang);
-        const finalUrl = this.lang ? urlWithLanguage : urlWithLanguage;
+        console.log(urlWithLanguage, this.lang);
+        /* const finalUrl = this.lang ? urlWithLanguage : urlWithLanguage; */
         do {
-          await fetch(finalUrl, {
+          await fetch(urlWithLanguage, {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${this.element.config.secureAccess}`,
