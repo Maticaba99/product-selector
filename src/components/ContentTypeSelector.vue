@@ -117,13 +117,17 @@ export default {
             .then(json => {
               // eslint-disable-next-line no-console
               console.log(json, "data");
+              // Actual language
+              const actualLanguage = this.lang ? "en" : "fr-CA";
               json.items.map(type => {
-                const res = {
-                  name: type.elements.display_name.value,
-                  sys_name: type.system.name
-                };
+                if (type.system.language === actualLanguage) {
+                  const res = {
+                    name: type.elements.display_name.value,
+                    sys_name: type.system.name
+                  };
 
-                return this.options.push(res);
+                  return this.options.push(res);
+                }
               });
 
               if (!this.xContinuation) {
