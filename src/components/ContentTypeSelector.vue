@@ -119,13 +119,12 @@ export default {
               const actualLanguage = this.lang ? "fr-CA" : "en";
               json.items.map(type => {
                 if (type.system.language === actualLanguage) {
-                  // eslint-disable-next-line no-console
-                  console.log(type, "data");
                   const res = {
                     name: type.elements.display_name.value,
                     sys_name: type.system.name
                   };
-
+                  // eslint-disable-next-line no-console
+                  console.log(res);
                   return this.options.push(res);
                 }
               });
