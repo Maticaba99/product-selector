@@ -1,8 +1,13 @@
 <template>
   <div>
     <div>
-      <toggle-button @change="onChangeEventHandler" :value="false" width=50,
-      height: 32, :labels="{ checked: 'French', unchecked: 'Default' }" />
+      <toggle-button
+        @change="onChangeEventHandler"
+        :value="false"
+        width="50"
+        height="32"
+        :labels="{ checked: 'French', unchecked: 'Default' }"
+      />
     </div>
     <multiselect
       v-model="selectedTypes"
