@@ -82,9 +82,6 @@ export default {
     limitText(count) {
       return `and ${count} other countries`;
     },
-    onChangeEventHandler() {
-      this.lang = !this.lang;
-    },
     async fetchTypes() {
       const url = `https://deliver.kontent.ai/${
         this.element.config.projectId
@@ -131,6 +128,10 @@ export default {
             });
         } while (this.xContinuation !== null);
       }
+    },
+    onChangeEventHandler() {
+      this.lang = !this.lang;
+      this.fetchTypes();
     },
     onSelect: function() {
       this.save(this.selectedTypes);
