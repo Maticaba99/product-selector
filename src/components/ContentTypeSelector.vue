@@ -101,6 +101,8 @@ export default {
             : ""
         }`;
         const finalUrl = this.lang ? urlWithLanguage : url;
+        // eslint-disable-next-line no-console
+        console.log(finalUrl, this.lang);
         do {
           await fetch(finalUrl, {
             headers: {
