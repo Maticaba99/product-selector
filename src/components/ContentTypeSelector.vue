@@ -134,6 +134,7 @@ export default {
       this.lang = !this.lang;
       // eslint-disable-next-line no-console
       console.log(this.lang, "updated");
+      this.xContinuation = "";
       await this.fetchTypes();
     },
     onSelect: function() {
