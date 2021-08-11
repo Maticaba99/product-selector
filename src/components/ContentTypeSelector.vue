@@ -129,9 +129,9 @@ export default {
         } while (this.xContinuation !== null);
       }
     },
-    onChangeEventHandler() {
+    async onChangeEventHandler() {
       this.lang = !this.lang;
-      this.fetchTypes();
+      await this.fetchTypes();
     },
     onSelect: function() {
       this.save(this.selectedTypes);
