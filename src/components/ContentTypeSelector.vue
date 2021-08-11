@@ -116,7 +116,7 @@ export default {
             })
             .then(json => {
               // Actual language
-              const actualLanguage = this.lang ? "en" : "fr-CA";
+              const actualLanguage = this.lang ? "fr-CA" : "en";
               json.items.map(type => {
                 if (type.system.language === actualLanguage) {
                   // eslint-disable-next-line no-console
