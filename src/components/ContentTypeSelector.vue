@@ -73,15 +73,14 @@ export default {
       // eslint-disable-next-line no-console
       console.log(this.context);
       if (!this.disable) {
+        const language = this.context.variant.codename;
         const url = `https://deliver.kontent.ai/${
           this.element.config.projectId
         }/items-feed?${
           this.element.config.filter
-            ? "&" + this.element.config.filter + `&language=en`
+            ? "&" + this.element.config.filter + `&language=${language}`
             : ""
         }`;
-        // eslint-disable-next-line no-console
-        console.log(url, "url");
         do {
           await fetch(url, {
             headers: {
