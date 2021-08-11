@@ -1,12 +1,5 @@
 <template>
   <div>
-    <div>
-      <toggle-button
-        @change="onChangeEventHandler"
-        :value="false"
-        :labels="{ checked: 'French', unchecked: 'Default' }"
-      />
-    </div>
     <multiselect
       v-model="selectedTypes"
       placeholder="Select types"
@@ -39,11 +32,7 @@
 </template>
 
 <script>
-import Vue from "vue";
 import Multiselect from "vue-multiselect";
-import { ToggleButton } from "vue-js-toggle-button";
-
-Vue.component("ToggleButton", ToggleButton);
 
 export default {
   components: {
@@ -54,8 +43,7 @@ export default {
       selectedTypes: this.value || [],
       options: [],
       isLoading: true,
-      xContinuation: "",
-      lang: false
+      xContinuation: ""
     };
   },
   created() {
@@ -82,52 +70,45 @@ export default {
       return `and ${count} other countries`;
     },
     async fetchTypes() {
-      const url = `https://deliver.kontent.ai/${
-        this.element.config.projectId
-      }/items-feed?${
-        this.element.config.filter ? "&" + this.element.config.filter : ""
-      }`;
-
-      const urlWithLanguage = `https://deliver.kontent.ai/${
-        this.element.config.projectId
-      }/items-feed?${
-        this.element.config.filter
-          ? "&" + this.element.config.filter + `&language=fr-CA`
-          : ""
-      }`;
-      const finalUrl = this.lang ? urlWithLanguage : url;
-      // eslint-disable-next-line no-console
-      console.log(finalUrl, this.lang);
       if (!this.disable) {
         do {
-          await fetch(finalUrl, {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${this.element.config.secureAccess}`,
-              "x-continuation": this.xContinuation
+          await fetch(
+            `https://deliver.kontent.ai/${
+              this.element.config.projectId
+            }/items-feed?${
+              this.element.config.filter
+                ? "&" +
+                  this.element.config.filter +
+                  `&language=${this.element.language}`
+                : ""
+            }`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${this.element.config.secureAccess}`,
+                "x-continuation": this.xContinuation
+              }
             }
-          })
+          )
             .then(response => {
               this.xContinuation = response.headers.get("x-continuation");
-
-              // eslint-disable-next-line no-console
-              console.log(this.xContinuation, "xContinuation");
               return response.json();
             })
             .then(json => {
-              // Actual language
-              const actualLanguage = this.lang ? "fr-CA" : "en";
+              // eslint-disable-next-line no-console
+              console.log(json, "check");
+
               json.items.map(type => {
-                if (type.system.language === actualLanguage) {
-                  const res = {
-                    name: type.elements.display_name.value,
-                    sys_name: type.system.name
-                  };
-                  // eslint-disable-next-line no-console
-                  console.log(res);
-                  return this.options.push(res);
-                }
+                const res = {
+                  name: type.elements.display_name.value,
+                  sys_name: type.system.name
+                };
+                // eslint-disable-next-line no-console
+                console.log(res);
+                return this.options.push(res);
               });
+              // eslint-disable-next-line no-console
+              console.log(this.options[2]);
 
               if (!this.xContinuation) {
                 this.isLoading = false;
@@ -135,14 +116,6 @@ export default {
             });
         } while (this.xContinuation !== null);
       }
-    },
-    async onChangeEventHandler() {
-      this.lang = !this.lang;
-      // eslint-disable-next-line no-console
-      console.log(this.lang, "updated");
-      this.xContinuation = "";
-      this.options = [];
-      await this.fetchTypes();
     },
     onSelect: function() {
       this.save(this.selectedTypes);
