@@ -100,7 +100,7 @@ export default {
             : ""
         }`;
 
-        const finalUrl = this.lang ? urlWithLanguage : url; 
+        const finalUrl = this.lang ? urlWithLanguage : url;
         do {
           await fetch(finalUrl, {
             headers: {
