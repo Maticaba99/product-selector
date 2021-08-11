@@ -9,6 +9,7 @@
       <ContentTypeSelector
         :element="element"
         :context="context"
+        :disable="disable"
         :value.sync="value"
       />
       <Debug
@@ -40,6 +41,7 @@ export default {
   data: () => ({
     loaded: false,
     errorMessage: "",
+    disable: false,
     element: {},
     context: {},
     value: null
@@ -73,6 +75,7 @@ export default {
     },
     initialize: function(element, context) {
       this.element = element;
+      this.disabled = element.disabled;
       this.context = context;
       this.value = this.element.value ? JSON.parse(this.element.value) : null;
       this.loaded = true;
