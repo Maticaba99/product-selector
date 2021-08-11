@@ -77,7 +77,7 @@ export default {
           this.element.config.filter
             ? "&" +
               this.element.config.filter +
-              `&language=${this.element.language}`
+              `&language=${this.element.config.language}`
             : ""
         }`;
         // eslint-disable-next-line no-console
