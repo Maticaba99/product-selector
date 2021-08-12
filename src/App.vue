@@ -133,7 +133,13 @@ export default {
             });
         })
       );
-
+      console.log(
+        this.element.disabled
+          ? this.element.value
+            ? JSON.parse(this.element.value)
+            : null
+          : valueUpdated
+      );
       this.value = this.element.disabled
         ? this.element.value
           ? JSON.parse(this.element.value)
