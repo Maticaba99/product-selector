@@ -134,14 +134,11 @@ export default {
         })
       );
 
-      this.element.disabled
-        ? console.log(
-            "esta disabled",
-            this.element.value,
-            this.element.disabled
-          )
-        : console.log("no indabled", valueUpdated, this.element.disabled);
-      this.value = this.element.value ? JSON.parse(this.element.value) : null;
+      this.value = this.element.disabled
+        ? this.element.value
+          ? JSON.parse(this.element.value)
+          : null
+        : valueUpdated;
       this.loaded = true;
       /* this.updateSize(); */
     },
