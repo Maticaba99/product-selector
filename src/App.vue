@@ -81,7 +81,7 @@ export default {
       const language = this.context.variant.codename;
 
       const valueUpdated = await this.value.map(async item => {
-        await fetch(this.element.config.API, {
+        return await fetch(this.element.config.API, {
           method: "post",
           headers: {
             Authorization: `Basic ${this.element.config.API_AUTH}`,
