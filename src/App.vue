@@ -105,10 +105,27 @@ export default {
         }
     }
 }`
-      }).then(async response => {
-        // eslint-disable-next-line no-console
-        console.log(await response.json(), "ehere");
-      });
+      })
+        .then(response => response.json())
+        .then(async json => {
+          const options = await json.hits.hits.map(product => {
+            return {
+              id: product._source.productfields.unique_id,
+              name: product._source.productfields.product_name,
+              dimensions:
+                product._source.productcard &&
+                product._source.productcard.dimensionsin,
+              image:
+                product._source.productcard &&
+                product._source.productcard.featureimage,
+              quantity: 1,
+              price_cad: product._source.productfields.listprice_cad,
+              price_usd: product._source.productfields.listprice_usd
+            };
+          });
+          // eslint-disable-next-line no-console
+          console.log(options, "updated");
+        });
 
       this.loaded = true;
       /* this.updateSize(); */
