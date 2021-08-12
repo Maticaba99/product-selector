@@ -133,6 +133,8 @@ export default {
             });
         })
       );
+      console.log(this.element.disabled, "is disabled");
+      console.log(valueUpdated, "has to be");
       console.log(
         this.element.disabled
           ? this.element.value
