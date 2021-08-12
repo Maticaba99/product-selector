@@ -112,7 +112,7 @@ export default {
               const options = await json.hits.hits.map(product => {
                 return {
                   id: product._source.productfields.unique_id,
-                  name: product._source.productfields.product_name,
+                  name: product._source.productfields.product_name + "issue",
                   dimensions:
                     product._source.productcard &&
                     product._source.productcard.dimensionsin,
