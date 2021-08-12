@@ -165,8 +165,6 @@ export default {
               price_usd: product._source.productfields.listprice_usd
             };
           });
-          // eslint-disable-next-line no-console
-          console.log(options);
           this.options = options;
           this.isLoading = false;
           this.updateSize();

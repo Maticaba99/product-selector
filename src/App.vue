@@ -74,10 +74,39 @@ export default {
       this.element.disabled = disableState;
       /* this.updateSize(); */
     },
-    initialize: function(element, context) {
+    initialize: async function(element, context) {
       this.element = element;
       this.context = context;
       this.value = this.element.value ? JSON.parse(this.element.value) : null;
+      await fetch(this.element.config.API, {
+        method: "post",
+        headers: {
+          Authorization: `Basic ${this.element.config.API_AUTH}`,
+          "Content-Type": "application/json"
+        },
+        body: `{
+    "query": {
+        "bool": {
+            "must": [
+               {
+                    "term": {
+                        "productfields.unique_id.keyword": "141332-L-000-004"
+                    }
+                } ,
+                 {
+                    "term": {
+                        "language.keyword": "fr-CA"
+                    }
+                } 
+                ]
+        }
+    }
+}`
+      }).then(response => {
+        // eslint-disable-next-line no-console
+        console.log(response.json(), "ehere");
+      });
+
       this.loaded = true;
       /* this.updateSize(); */
     },
