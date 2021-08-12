@@ -132,6 +132,8 @@ export default {
             });
         })
       );
+      // eslint-disable-next-line no-console
+      console.log(this.element.disabled);
       this.value = valueUpdated;
       this.loaded = true;
       /* this.updateSize(); */
