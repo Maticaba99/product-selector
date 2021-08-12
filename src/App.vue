@@ -78,6 +78,7 @@ export default {
       this.element = element;
       this.context = context;
       this.value = this.element.value ? JSON.parse(this.element.value) : null;
+      const language = this.context.variant.codename;
       await fetch(this.element.config.API, {
         method: "post",
         headers: {
@@ -90,12 +91,12 @@ export default {
             "must": [
                {
                     "term": {
-                        "productfields.unique_id.keyword": "141332-L-000-004"
+                        "productfields.unique_id.keyword": "105726-R-108-007"
                     }
                 } ,
                  {
                     "term": {
-                        "language.keyword": "fr-CA"
+                        "language.keyword": "${language}"
                     }
                 } 
                 ]
