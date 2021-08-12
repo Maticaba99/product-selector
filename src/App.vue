@@ -9,8 +9,8 @@
       <ContentTypeSelector
         :element="element"
         :context="context"
-        :disable="disable"
         :value.sync="value"
+        :updateSize="updateSize"
       />
       <Debug
         :element="element"
@@ -41,7 +41,6 @@ export default {
   data: () => ({
     loaded: false,
     errorMessage: "",
-    disable: false,
     element: {},
     context: {},
     value: null
@@ -64,6 +63,7 @@ export default {
         try {
           CustomElement.getElementValue(elementCodename, value => {
             resolve(value);
+            /* this.updateSize(); */
           });
         } catch (error) {
           reject(error);
@@ -72,20 +72,21 @@ export default {
     },
     handleDisable: function(disableState) {
       this.element.disabled = disableState;
+      /* this.updateSize(); */
     },
     initialize: function(element, context) {
       this.element = element;
-      this.disabled = element.disabled;
       this.context = context;
       this.value = this.element.value ? JSON.parse(this.element.value) : null;
       this.loaded = true;
-      this.updateSize();
+      /* this.updateSize(); */
     },
     save: function(value) {
       // Explicitly using == to match both null and undefined
       const toSave = value == null ? null : JSON.stringify(value);
       this.element.value = toSave;
       CustomElement.setValue(toSave);
+      /*       this.updateSize(); */
     },
     updateSize() {
       Vue.nextTick(function() {
@@ -94,7 +95,6 @@ export default {
           document.body.offsetHeight,
           document.documentElement.offsetHeight
         );
-
         CustomElement.setHeight(height);
       });
     }
