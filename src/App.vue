@@ -123,8 +123,9 @@ export default {
               price_usd: product._source.productfields.listprice_usd
             };
           });
+          const selectedPrevious = options.length > 0 && options[0];
           // eslint-disable-next-line no-console
-          console.log(options, "updated");
+          console.log(selectedPrevious);
         });
 
       this.loaded = true;
