@@ -77,11 +77,13 @@ export default {
     initialize: async function(element, context) {
       this.element = element;
       this.context = context;
-      this.value = this.element.value ? JSON.parse(this.element.value) : null;
+      const previousValueJSON = this.element.value
+        ? JSON.parse(this.element.value)
+        : null;
       const language = this.context.variant.codename;
 
       const valueUpdated = await Promise.all(
-        this.value.map(async item => {
+        previousValueJSON.map(async item => {
           return await fetch(this.element.config.API, {
             method: "post",
             headers: {
@@ -130,8 +132,7 @@ export default {
             });
         })
       );
-      // eslint-disable-next-line no-console
-      console.log(await valueUpdated);
+      this.value = valueUpdated;
       this.loaded = true;
       /* this.updateSize(); */
     },
