@@ -113,7 +113,7 @@ export default {
             .then(async json => {
               const options = await json.hits.hits.map(product => {
                 return {
-                  id: product._source.productfields.unique_id,
+                  id: product._source.productfields.unique_id + " working",
                   name: product._source.productfields.product_name,
                   dimensions:
                     product._source.productcard &&
