@@ -102,9 +102,9 @@ export default {
         }
     }
 }`
-      }).then(response => {
+      }).then(async response => {
         // eslint-disable-next-line no-console
-        console.log(response.json(), "ehere");
+        console.log(await response.json(), "ehere");
       });
 
       this.loaded = true;
