@@ -25,6 +25,7 @@
 
 <script>
 /*global CustomElement*/
+/* eslint-disable no-console */
 import Callout from "./components/Callout";
 import Debug from "./components/Debug";
 import ContentTypeSelector from "./components/ContentTypeSelector";
@@ -132,13 +133,11 @@ export default {
             });
         })
       );
-      // eslint-disable-next-line no-console
-      console.log();
-      this.value = !this.element.disabled
-        ? valueUpdated
-        : this.element.value
-        ? JSON.parse(this.element.value)
-        : null;
+
+      this.element.disable
+        ? console.log("esta disabled", this.element.value)
+        : console.log("no indabled", valueUpdated);
+      this.value = this.element.value ? JSON.parse(this.element.value) : null;
       this.loaded = true;
       /* this.updateSize(); */
     },
