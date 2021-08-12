@@ -80,7 +80,7 @@ export default {
       this.value = this.element.value ? JSON.parse(this.element.value) : null;
       const language = this.context.variant.codename;
 
-      this.value.map(async item => {
+      const valueUpdated = this.value.map(async item => {
         await fetch(this.element.config.API, {
           method: "post",
           headers: {
@@ -124,11 +124,12 @@ export default {
               };
             });
             const selectedPrevious = options.length > 0 && options[0];
-            // eslint-disable-next-line no-console
-            console.log(selectedPrevious);
+
+            return selectedPrevious;
           });
       });
-
+      // eslint-disable-next-line no-console
+      console.log(valueUpdated);
       this.loaded = true;
       /* this.updateSize(); */
     },
