@@ -80,15 +80,14 @@ export default {
       this.value = this.element.value ? JSON.parse(this.element.value) : null;
       const language = this.context.variant.codename;
 
-      const valueUpdated = await Promise.all(
-        this.value.map(async item => {
-          await fetch(this.element.config.API, {
-            method: "post",
-            headers: {
-              Authorization: `Basic ${this.element.config.API_AUTH}`,
-              "Content-Type": "application/json"
-            },
-            body: `{
+      const valueUpdated = await this.value.map(async item => {
+        await fetch(this.element.config.API, {
+          method: "post",
+          headers: {
+            Authorization: `Basic ${this.element.config.API_AUTH}`,
+            "Content-Type": "application/json"
+          },
+          body: `{
     "query": {
         "bool": {
             "must": [
@@ -106,32 +105,32 @@ export default {
         }
     }
 }`
-          })
-            .then(response => response.json())
-            .then(async json => {
-              const options = await json.hits.hits.map(product => {
-                return {
-                  id: product._source.productfields.unique_id,
-                  name: product._source.productfields.product_name,
-                  dimensions:
-                    product._source.productcard &&
-                    product._source.productcard.dimensionsin,
-                  image:
-                    product._source.productcard &&
-                    product._source.productcard.featureimage,
-                  quantity: 1,
-                  price_cad: product._source.productfields.listprice_cad,
-                  price_usd: product._source.productfields.listprice_usd
-                };
-              });
-              const selectedPrevious = options.length > 0 && options[0];
-
-              return selectedPrevious;
-            });
         })
-      );
+          .then(response => response.json())
+          .then(async json => {
+            const options = await json.hits.hits.map(product => {
+              return {
+                id: product._source.productfields.unique_id,
+                name: product._source.productfields.product_name,
+                dimensions:
+                  product._source.productcard &&
+                  product._source.productcard.dimensionsin,
+                image:
+                  product._source.productcard &&
+                  product._source.productcard.featureimage,
+                quantity: 1,
+                price_cad: product._source.productfields.listprice_cad,
+                price_usd: product._source.productfields.listprice_usd
+              };
+            });
+            const selectedPrevious = options.length > 0 && options[0];
+
+            return selectedPrevious;
+          });
+      });
+
       // eslint-disable-next-line no-console
-      console.log(valueUpdated);
+      console.log(await valueUpdated);
       this.loaded = true;
       /* this.updateSize(); */
     },
