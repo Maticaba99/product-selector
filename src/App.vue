@@ -78,6 +78,8 @@ export default {
       this.element = element;
       this.context = context;
       this.value = this.element.value ? JSON.parse(this.element.value) : null;
+      // eslint-disable-next-line no-console
+      console.log(this.value, "previous");
       const language = this.context.variant.codename;
       await fetch(this.element.config.API, {
         method: "post",
