@@ -135,18 +135,11 @@ export default {
       );
       console.log(this.element.disabled, "is disabled");
       console.log(valueUpdated, "has to be");
-      console.log(
-        this.element.disabled
-          ? this.element.value
-            ? JSON.parse(this.element.value)
-            : null
-          : valueUpdated
-      );
-      this.value = this.element.disabled
-        ? this.element.value
-          ? JSON.parse(this.element.value)
-          : null
-        : valueUpdated;
+      const withoutUpdate = this.element.value
+        ? JSON.parse(this.element.value)
+        : null;
+      console.log(this.element.disabled ? withoutUpdate : valueUpdated);
+      this.value = this.element.disabled ? withoutUpdate : valueUpdated;
       this.loaded = true;
       /* this.updateSize(); */
     },
