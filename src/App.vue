@@ -78,22 +78,22 @@ export default {
       this.element = element;
       this.context = context;
       this.value = this.element.value ? JSON.parse(this.element.value) : null;
-      // eslint-disable-next-line no-console
-      console.log(this.value, "previous");
       const language = this.context.variant.codename;
-      await fetch(this.element.config.API, {
-        method: "post",
-        headers: {
-          Authorization: `Basic ${this.element.config.API_AUTH}`,
-          "Content-Type": "application/json"
-        },
-        body: `{
+
+      this.value.map(async item => {
+        await fetch(this.element.config.API, {
+          method: "post",
+          headers: {
+            Authorization: `Basic ${this.element.config.API_AUTH}`,
+            "Content-Type": "application/json"
+          },
+          body: `{
     "query": {
         "bool": {
             "must": [
                {
                     "term": {
-                        "productfields.unique_id.keyword": "105726-R-108-007"
+                        "productfields.unique_id.keyword": "${item.id}"
                     }
                 } ,
                  {
@@ -105,28 +105,29 @@ export default {
         }
     }
 }`
-      })
-        .then(response => response.json())
-        .then(async json => {
-          const options = await json.hits.hits.map(product => {
-            return {
-              id: product._source.productfields.unique_id,
-              name: product._source.productfields.product_name,
-              dimensions:
-                product._source.productcard &&
-                product._source.productcard.dimensionsin,
-              image:
-                product._source.productcard &&
-                product._source.productcard.featureimage,
-              quantity: 1,
-              price_cad: product._source.productfields.listprice_cad,
-              price_usd: product._source.productfields.listprice_usd
-            };
+        })
+          .then(response => response.json())
+          .then(async json => {
+            const options = await json.hits.hits.map(product => {
+              return {
+                id: product._source.productfields.unique_id,
+                name: product._source.productfields.product_name,
+                dimensions:
+                  product._source.productcard &&
+                  product._source.productcard.dimensionsin,
+                image:
+                  product._source.productcard &&
+                  product._source.productcard.featureimage,
+                quantity: 1,
+                price_cad: product._source.productfields.listprice_cad,
+                price_usd: product._source.productfields.listprice_usd
+              };
+            });
+            const selectedPrevious = options.length > 0 && options[0];
+            // eslint-disable-next-line no-console
+            console.log(selectedPrevious);
           });
-          const selectedPrevious = options.length > 0 && options[0];
-          // eslint-disable-next-line no-console
-          console.log(selectedPrevious);
-        });
+      });
 
       this.loaded = true;
       /* this.updateSize(); */
