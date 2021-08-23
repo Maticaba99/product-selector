@@ -80,7 +80,7 @@ export default {
       this.context = context;
       const previousValueJSON = this.element.value
         ? JSON.parse(this.element.value)
-        : undefined;
+        : {};
       const language = this.context.variant.codename;
 
       const valueUpdated = await Promise.all(
@@ -139,7 +139,7 @@ export default {
       console.log(valueUpdated, "has to be");
       const withoutUpdate = this.element.value
         ? JSON.parse(this.element.value)
-        : undefined;
+        : {};
       console.log(this.element.disabled ? withoutUpdate : valueUpdated);
       this.value = this.element.disabled
         ? withoutUpdate
