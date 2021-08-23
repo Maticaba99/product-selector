@@ -84,7 +84,8 @@ export default {
       const language = this.context.variant.codename;
 
       const valueUpdated = await Promise.all(
-        previousValueJSON.length > 0 &&
+        previousValueJSON &&
+          previousValueJSON.length > 0 &&
           previousValueJSON.map(async item => {
             return await fetch(this.element.config.API, {
               method: "post",
