@@ -141,7 +141,11 @@ export default {
         ? JSON.parse(this.element.value)
         : null;
       console.log(this.element.disabled ? withoutUpdate : valueUpdated);
-      this.value = this.element.disabled ? withoutUpdate : valueUpdated;
+      this.value = this.element.disabled
+        ? withoutUpdate
+        : previousValueJSON && previousValueJSON.length > 0
+        ? valueUpdated
+        : withoutUpdate;
       this.loaded = true;
       /* this.updateSize(); */
     },
