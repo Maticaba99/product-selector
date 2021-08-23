@@ -80,12 +80,13 @@ export default {
       this.context = context;
       const previousValueJSON = this.element.value
         ? JSON.parse(this.element.value)
-        : {};
+        : null;
       const language = this.context.variant.codename;
 
-      const valueUpdated = await Promise.all(
+      const valueUpdated =
         previousValueJSON &&
-          previousValueJSON.length > 0 &&
+        previousValueJSON.length > 0 &&
+        (await Promise.all(
           previousValueJSON.map(async item => {
             return await fetch(this.element.config.API, {
               method: "post",
@@ -134,18 +135,14 @@ export default {
                 return selectedPrevious;
               });
           })
-      );
+        ));
       console.log(this.element.disabled, "is disabled");
       console.log(valueUpdated, "has to be");
       const withoutUpdate = this.element.value
         ? JSON.parse(this.element.value)
-        : {};
+        : null;
       console.log(this.element.disabled ? withoutUpdate : valueUpdated);
-      this.value = this.element.disabled
-        ? withoutUpdate
-        : previousValueJSON && previousValueJSON.length > 0
-        ? valueUpdated
-        : withoutUpdate;
+      this.value = this.element.disabled ? withoutUpdate : valueUpdated;
       this.loaded = true;
       /* this.updateSize(); */
     },
